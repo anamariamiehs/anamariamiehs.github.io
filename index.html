@@ -21,22 +21,50 @@
 function preload() {
     document.body.className = 'load';
     var img = document.querySelector('.lazyload');
-    var image = new Image();
-    image.src = img.getAttribute('data-src');
-    image.className = "img-responsive lazyload";
-    document.getElementById('pageLoader').innerHTML = '';
-    image.onload = function(e){
-      document.getElementById('pageLoader').append(image);
-      setTimeout(function(){document.body.className = 'loaded';}, 110);
-    }
+    var placeholder = img.src;
+    img.style.display = 'none';
+    setTimeout(function(){
+      var image = new Image();
+      image.src = img.getAttribute('data-src');
+      image.onload = function(e){
+        var link = image.src;
+        img.src = link;
+        img.style.display = 'block';
+        document.body.className = 'loading';
+        setTimeout(function(){
+          img.style.display = 'none';
+          img.src = placeholder;
+        }, 2200);
+        setTimeout(function(){
+          document.body.className = 'loaded';
+        }, 2400);
+      }
+    }, 1000);
+
+}
+
+function prel() {
+document.body.className = 'load';
+  setTimeout(function(){
+  document.body.className = 'loading';
+    setTimeout(function(){
+      document.body.className = 'loaded';
+    }, 2400);
+  }, 1000);
 }
 </script>
   </head>
   <body onload="preload()" class="load">
 
 <div id="pageLoader">
-  <img class="img-responsive lazyload" data-src="img/logos/logo_ani_2_xs.gif" />
+  <img class="img-responsive lazyload" src="/img/placeholder.gif" data-src="img/logos/logo_ani_1_xs.gif" />
 </div>
+
+  <!--<video autoplay width="630" height="388" poster="img/placeholder.gif">
+      <source src="img/tapfuse.mp4" type="video/mp4" />
+      <source src="img/tapfuse.webm" type="video/webm" />
+      Video not supported
+  </video>-->
 
 <div class="wrapper" id="home">
 
